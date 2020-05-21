@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.16)
 # Web toolchain
 if(WEB)
   set(CMAKE_TOOLCHAIN_FILE ../emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake)
-  set(CMAKE_EXE_LINKER_FLAGS "-s WASM=1 -s ASSERTIONS=1 -s MAX_WEBGL_VERSION=2 -s TOTAL_MEMORY=32MB -s ALLOW_MEMORY_GROWTH=1")
+  set(CMAKE_EXE_LINKER_FLAGS "-s WASM=1 -s ASSERTIONS=1 -s MAX_WEBGL_VERSION=2 -s TOTAL_MEMORY=32MB")
 endif()
 
 
@@ -41,6 +41,10 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+# Bundle 'assets/' for Web
+if(WEB)
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --preload-file ${PROJECT_SOURCE_DIR}/assets@assets")
+endif()
 
 # Main executable
 add_executable(raylib-test main.cc)
