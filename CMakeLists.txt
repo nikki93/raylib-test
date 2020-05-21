@@ -9,6 +9,7 @@ endif()
 
 # Project
 project(raylib-test)
+set(MY_LIBRARIES "")
 
 
 # Generate 'compile_commands.json'
@@ -26,6 +27,13 @@ if(WEB)
 endif()
 set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 add_subdirectory(vendor/raylib)
+list(APPEND MY_LIBRARIES "raylib")
+
+
+# fmt
+add_subdirectory(vendor/fmt)
+include_directories(${PROJECT_SOURCE_DIR}/vendor/fmt/include)
+list(APPEND MY_LIBRARIES "fmt::fmt")
 
 
 # Use C++17
@@ -36,7 +44,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Main executable
 add_executable(raylib-test main.cc)
-target_link_libraries(raylib-test raylib)
+target_link_libraries(raylib-test "${MY_LIBRARIES}")
 if(WEB)
   configure_file(${PROJECT_SOURCE_DIR}/index.html index.html)
 endif()
